@@ -5,6 +5,7 @@ import java.lang.Iterable;
 import java.lang.String;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.apache.log4j.Logger;
 
 //public class MyLinkedList<AnyType> implements Iterable<AnyType> {
 public class MyLinkedList<AnyType>{
@@ -18,7 +19,7 @@ public class MyLinkedList<AnyType>{
         public Node<AnyType> prev;
         public Node<AnyType> next;
 
-        public Node(Node prev_node,Node next_node,AnyType value){
+        public Node(Node<AnyType> prev_node,Node<AnyType> next_node,AnyType value){
             prev = prev_node;
             next = next_node;
             data = value;
@@ -50,8 +51,8 @@ public class MyLinkedList<AnyType>{
         if(idx>size()){
             throw new NoSuchElementException();
         }
-        Node<AnyType> pre_node = get_node(idx);
-        Node<AnyType> next_node = get_node(idx).next;
+        Node<AnyType> pre_node = get_node(idx).prev;
+        Node<AnyType> next_node = get_node(idx);
         Node<AnyType> insert_node = new Node<AnyType>(pre_node,next_node,data);
         pre_node.next = insert_node;
         next_node.prev = insert_node;
@@ -63,13 +64,13 @@ public class MyLinkedList<AnyType>{
         Node<AnyType> temp_node;
         if (idx * 2 > size()) {
             temp_node = end_node;
-            for(int i=size();i<idx;i--){
+            for(int i=size();i>idx;i--){
                 temp_node = temp_node.prev;
             }
         }
         else{
-            temp_node = head_node;
-            for(int i=0;i>idx;i++){
+            temp_node = head_node.next;
+            for(int i=0;i<idx;i++){
                 temp_node = temp_node.next;
             }
         }
@@ -91,6 +92,8 @@ public class MyLinkedList<AnyType>{
 
     public static void main(String args[]){
         MyLinkedList<String> my_linked_list = new MyLinkedList<String>();
+        Logger logger = Logger.getLogger(MyLinkedList.class);
+        logger.debug("begin to print:");
         my_linked_list.add("2");
         my_linked_list.add("3");
         my_linked_list.add("4");
