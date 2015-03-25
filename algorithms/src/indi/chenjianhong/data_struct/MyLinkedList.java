@@ -1,5 +1,4 @@
 package indi.chenjianhong.data_struct;
-import org.omg.CORBA.Any;
 
 import java.lang.Iterable;
 import java.lang.String;
@@ -7,8 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.apache.log4j.Logger;
 
-//public class MyLinkedList<AnyType> implements Iterable<AnyType> {
-public class MyLinkedList<AnyType>{
+public class MyLinkedList<AnyType> implements Iterable<AnyType> {
 
     Node<AnyType> head_node;
     Node<AnyType> end_node;
@@ -82,13 +80,41 @@ public class MyLinkedList<AnyType>{
         return node.data;
     }
 
-//    public boolean remove(int idx){
-//
-//    }
-//
-//    public Iterator<AnyType> iterator(int idx){
-//
-//    }
+    public void remove(int idx){
+        Node<AnyType> current_node = get_node(idx);
+        remove(current_node);
+    }
+
+    public void remove(Node<AnyType> current_node){
+        current_node.prev.next = current_node.next;
+        current_node.next.prev = current_node.prev;
+    }
+
+    public Iterator<AnyType> iterator(){
+        return new <AnyType>MyLinkedListIterator();
+    }
+
+    private class MyLinkedListIterator implements java.util.Iterator<AnyType>{
+
+        private Node<AnyType> current = head_node.next;
+
+        public boolean hasNext(){
+            return current != end_node;
+        }
+
+        public AnyType next(){
+            if(!hasNext()){
+                throw new java.util.NoSuchElementException();
+            }
+            AnyType next_item = current.data;
+            current = current.next;
+            return next_item;
+        }
+
+        public void remove(){
+            MyLinkedList.this.remove(current.prev);
+        }
+    }
 
     public static void main(String args[]){
         MyLinkedList<String> my_linked_list = new MyLinkedList<String>();
@@ -100,9 +126,11 @@ public class MyLinkedList<AnyType>{
         for(int i=0;i<my_linked_list.size();i++){
             System.out.println(my_linked_list.get(i));
         }
-//        for(String i:my_linked_list){
-//            System.out.println(i);
-//        }
+        my_linked_list.remove(2);
+        logger.debug("begin to for each print:");
+        for(String i:my_linked_list){
+            System.out.println(i);
+        }
 
     }
 }
