@@ -5,7 +5,7 @@ package indi.chenjianhong.data_struct;
  */
 public class MyArrayStack<AnyType> {
 
-    private static final int DEFAULT_CAPACITY = 10;
+    private int default_capacity = 1;
 
     private AnyType[] theItems;
 
@@ -16,14 +16,22 @@ public class MyArrayStack<AnyType> {
     }
 
     public void clear(){
-        ensureCapacity(DEFAULT_CAPACITY);
+        ensureCapacity(default_capacity);
     }
 
     public void ensureCapacity(int newCapacity){
+        AnyType[] old_items = theItems;
         theItems = (AnyType[]) new Object[newCapacity];
+        for(int i=0;i<size();i++){
+            theItems[i]=old_items[i];
+        }
     }
 
     public boolean push(AnyType value){
+        if(current>= default_capacity){
+            default_capacity = current*2;
+            ensureCapacity(default_capacity);
+        }
         theItems[current++] = value;
         return true;
     }
