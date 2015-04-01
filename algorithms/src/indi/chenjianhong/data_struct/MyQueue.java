@@ -1,60 +1,72 @@
 package indi.chenjianhong.data_struct;
 
 /**
- * Created by mason on 2015/3/31.
+ * my own queue 
  */
 public class MyQueue<AnyType> {
-    private int default_capacity = 1;
 
-    private AnyType[] theItems;
+    private int size = 0;
+    Node head_node;
+    Node end_node;
 
-    private int current = 0;
+    private class Node{
+
+        private Node pre;
+
+        private Node next;
+
+        private AnyType value;
+
+        public Node(Node pre_node,Node next_node,AnyType node_value){
+            pre = pre_node;
+            next = next_node;
+            value = node_value;
+        }
+    }
 
     public MyQueue() {
         clear();
     }
 
     public void clear() {
-        ensureCapacity(default_capacity);
+        head_node = new Node(null,null,null);
+        end_node = new Node(head_node,null,null);
     }
 
-    public void ensureCapacity(int newCapacity) {
-        AnyType[] old_items = theItems;
-        theItems = (AnyType[]) new Object[newCapacity];
-        for (int i = 0; i < size(); i++) {
-            theItems[i] = old_items[i];
-        }
-    }
 
-    public boolean push(AnyType value) {
-        if (current >= default_capacity) {
-            default_capacity = current * 2;
-            ensureCapacity(default_capacity);
-        }
-        theItems[current++] = value;
+    public boolean add(AnyType value) {
+        Node node = new Node(end_node.pre,end_node,value);
+        end_node.pre.next = node;
+        end_node.pre = node;
+        size ++;
         return true;
     }
 
-    public AnyType pop() {
+    public AnyType remove() {
         if (size() <= 0) {
             System.out.println(size());
             throw new ArrayIndexOutOfBoundsException();
         }
-        return theItems[--current];
+        Node node = head_node.next;
+        head_node.next = node.next;
+        node.next.pre = head_node;
+        size --;
+        return node.value;
     }
 
     public int size() {
-        return current;
+        return size;
     }
 
     public static void main(String args[]) {
-        MyArrayStack<String> my_stack = new MyArrayStack<String>();
-        my_stack.push("1");
-        my_stack.push("2");
-        my_stack.push("3");
-        my_stack.push("4");
-        for (int i = my_stack.size(); i > 0; i--) {
-            System.out.println(String.format("%s", my_stack.pop()));
+        MyQueue<String> my_queue = new MyQueue<String>();
+        my_queue.add("1");
+        my_queue.add("2");
+        my_queue.add("3");
+        my_queue.add("4");
+        for (int i = my_queue.size(); i > 0; i--) {
+            System.out.println(String.format("queue value:%s", my_queue.remove()));
+            System.out.println(String.format("queue length:%s", my_queue.size()));
         }
     }
 }
