@@ -1,6 +1,5 @@
 package indi.chenjianhong.data_struct;
 
-import org.omg.CORBA.Any;
 
 /**
  * own search tree
