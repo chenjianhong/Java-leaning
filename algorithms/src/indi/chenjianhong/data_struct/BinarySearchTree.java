@@ -5,7 +5,7 @@ import org.omg.CORBA.Any;
 /**
  * own search tree
  */
-public class BinarySearchTree<AnyType>{
+public class BinarySearchTree<AnyType> implements Comparable<AnyType>{
 
     private BinaryNode<AnyType> root;
 
@@ -28,13 +28,18 @@ public class BinarySearchTree<AnyType>{
 
 
     public boolean insert(AnyType element_data){
-
+        insert(element_data,root);
+        return true;
     }
 
     public boolean insert(AnyType element_data,BinaryNode<AnyType> parent_node){
-
+        if(parent_node == null){
+            parent_node = new BinaryNode<AnyType>(null,null,element_data);
+        }
+        return true;
     }
 
+    public
 
 
 }

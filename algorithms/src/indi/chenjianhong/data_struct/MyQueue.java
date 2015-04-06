@@ -1,7 +1,7 @@
 package indi.chenjianhong.data_struct;
 
 /**
- * my own queue 
+ * my own queue
  */
 public class MyQueue<AnyType> {
 
