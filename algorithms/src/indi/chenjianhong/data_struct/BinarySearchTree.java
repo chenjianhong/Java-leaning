@@ -9,7 +9,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>{
     private BinaryNode<AnyType> root;
 
     public BinarySearchTree(){
-        root = null;
+
     }
 
     private static class BinaryNode<AnyType>{
@@ -44,17 +44,62 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>{
         return parent_node;
     }
 
+    public boolean contains(AnyType x){
+        return contains(x,root);
+    }
+    public boolean contains(AnyType x, BinaryNode<AnyType> node){
+        if(node == null){
+            return false;
+        }
+        int compare_result = x.compareTo(node.data);
+        if(compare_result<0){
+            return contains(x,node.left);
+        }
+        else {
+            return compare_result == 0 || contains(x,node.right);
+        }
+    }
+
+    public AnyType find_min(){
+        return find_min(root).data;
+    }
+
+    public AnyType find_max(){
+        return find_max(root).data;
+    }
+
+    public BinaryNode<AnyType> find_max(BinaryNode<AnyType> node){
+        if(node.right == null){
+            return node;
+        }
+        else {
+            return find_max(node.right);
+        }
+
+    }
+
+    public BinaryNode<AnyType> find_min(BinaryNode<AnyType> node){
+        if(node.left == null){
+            return node;
+        }
+        else {
+            return find_min(node.left);
+        }
+    }
+
     public void print_tree(){
         print_tree(root);
     }
 
     public void print_tree(BinaryNode<AnyType> parent_node){
         System.out.println(String.format("%s",parent_node.data));
-        if (parent_node.right!= null){
-            print_tree(parent_node.right);
-        }
         if (parent_node.left!= null){
+            System.out.println("print left");
             print_tree(parent_node.left);
+        }
+        if (parent_node.right!= null){
+            System.out.println("print right");
+            print_tree(parent_node.right);
         }
     }
 
@@ -65,6 +110,10 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>{
         b_tree.insert(3);
         b_tree.insert(4);
         b_tree.print_tree();
+        System.out.println(String.format("%s",b_tree.contains(1)));
+        System.out.println(String.format("%s",b_tree.contains(10)));
+        System.out.println(String.format("%s",b_tree.find_min()));
+        System.out.println(String.format("%s",b_tree.find_max()));
     }
 
 
