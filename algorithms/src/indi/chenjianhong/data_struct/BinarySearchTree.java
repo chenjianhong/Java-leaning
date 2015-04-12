@@ -1,6 +1,8 @@
 package indi.chenjianhong.data_struct;
 
 
+import org.omg.CORBA.Any;
+
 /**
  * own search tree
  */
@@ -42,6 +44,31 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>{
             parent_node.left = insert(element_data,parent_node.left);
         }
         return parent_node;
+    }
+
+    public boolean remove(AnyType element_data){
+        return remove(element_data,root);
+    }
+
+    public boolean remove(AnyType element_data,BinaryNode<AnyType> node){
+        if(node == null){
+            return false;
+        }
+        int compare_result = element_data.compareTo(node.data);
+        if(compare_result>0){
+            return remove(element_data, node.right);
+        }
+        else if(compare_result<0){
+            return remove(element_data, node.left);
+        }
+        else if(node.left != null && node.right != null) {
+            node.data = find_min(node.left).data;
+            return remove(node.data,node.left);
+        }
+        else {
+            node = (node.left != null) ? node.left:node.right;
+            return true;
+        }
     }
 
     public boolean contains(AnyType x){
