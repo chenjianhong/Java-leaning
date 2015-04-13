@@ -46,29 +46,29 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>{
         return parent_node;
     }
 
-    public boolean remove(AnyType element_data){
+    public BinaryNode<AnyType> remove(AnyType element_data){
         return remove(element_data,root);
     }
 
-    public boolean remove(AnyType element_data,BinaryNode<AnyType> node){
+    public BinaryNode<AnyType> remove(AnyType element_data,BinaryNode<AnyType> node){
         if(node == null){
-            return false;
+            return node;
         }
         int compare_result = element_data.compareTo(node.data);
         if(compare_result>0){
-            return remove(element_data, node.right);
+            node.right = remove(element_data, node.right);
         }
         else if(compare_result<0){
-            return remove(element_data, node.left);
+            node.left = remove(element_data, node.left);
         }
         else if(node.left != null && node.right != null) {
             node.data = find_min(node.left).data;
-            return remove(node.data,node.left);
+            node.right = remove(node.data,node.left);
         }
         else {
             node = (node.left != null) ? node.left:node.right;
-            return true;
         }
+        return node;
     }
 
     public boolean contains(AnyType x){
@@ -136,13 +136,12 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>{
         b_tree.insert(2);
         b_tree.insert(3);
         b_tree.insert(4);
+        b_tree.remove(4);
+        b_tree.remove(2);
         b_tree.print_tree();
         System.out.println(String.format("%s",b_tree.contains(1)));
         System.out.println(String.format("%s",b_tree.contains(10)));
         System.out.println(String.format("%s",b_tree.find_min()));
-        System.out.println(String.format("%s",b_tree.find_max()));
+        System.out.println(String.format("%s",b_tree.find_max()));yh
     }
-
-
-
 }
