@@ -142,6 +142,6 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>{
         System.out.println(String.format("%s",b_tree.contains(1)));
         System.out.println(String.format("%s",b_tree.contains(10)));
         System.out.println(String.format("%s",b_tree.find_min()));
-        System.out.println(String.format("%s",b_tree.find_max()));yh
+        System.out.println(String.format("%s",b_tree.find_max()));
     }
 }
