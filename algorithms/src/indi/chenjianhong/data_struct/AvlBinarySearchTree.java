@@ -47,35 +47,71 @@ public class AvlBinarySearchTree<AnyType extends Comparable<? super AnyType>>{
         return a>b?a:b;
     }
 
-    private AvlBinaryNode<AnyType> leftLeftRotation(AvlBinaryNode<AnyType> k1){
-        AvlBinaryNode<AnyType> k2 = k1.left;
+    private AvlBinaryNode<AnyType> leftLeftRotation(AvlBinaryNode<AnyType> k2){
+        /*
+        *           k2                   k1
+        *          /  \                 / \
+        *         k1   z       ->     x    k2
+        *        /  \                /     / \
+        *       x    y              x1    x   z
+        *      /
+        *     x1
+        */
+        AvlBinaryNode<AnyType> k1 = k2.left;
         k2.left = k1.right;
         k1.right = k2;
 
         k2.height = max(height(k2.left),height(k2.right))+1;
         k1.height = max(height(k1.left),height(k1.right))+1;
 
-        return k2;
+        return k1;
     }
 
-    private AvlBinaryNode<AnyType> rightRightRotation(AvlBinaryNode<AnyType> k1){
-        AvlBinaryNode<AnyType> k2 = k1.right;
-        k1.right = k2.left;
-        k2.left = k1;
+    private AvlBinaryNode<AnyType> rightRightRotation(AvlBinaryNode<AnyType> k2){
+        /*
+        *           k2                    k1
+        *          /  \                 /   \
+        *         z   k1       ->     k2    y
+        *             /  \            / \    \
+        *            x    y          z   x    y1
+        *                 \
+        *                  y1
+        */
+        AvlBinaryNode<AnyType> k1 = k2.right;
+        k2.right = k2.left;
+        k1.left = k2;
 
         k2.height = max(height(k2.left),height(k2.right))+1;
         k1.height = max(height(k1.left),height(k1.right))+1;
 
-        return k2;
+        return k1;
     }
 
     private AvlBinaryNode<AnyType> leftRightRotation(AvlBinaryNode<AnyType> k3){
+        /*
+        *           k3                   k3
+        *          /  \                 / \
+        *         k1   z       ->     k2    z   ->      k2
+        *        /  \                / \              /   \
+        *       x    k2            k1   x1           k1    k3
+        *           /  \          / \               / \    / \
+        *          y   x1        x  y              x  y  x1   z
+        */
         k3.left = rightRightRotation(k3.left);
         return leftLeftRotation(k3);
     }
 
 
     private AvlBinaryNode<AnyType> rightLeftRotation(AvlBinaryNode<AnyType> k3){
+        /*
+        *           k3                   k3
+        *          /  \                 / \
+        *         z   k1       ->     z    k2   ->           k2
+        *             / \                 / \              /   \
+        *            k2  x               y  k1            k3    k1
+        *           /  \                   / \           / \    / \
+        *          y   x1                 x1  x         z  y  x1   x
+        */
         k3.right = leftLeftRotation(k3.right);
         return rightRightRotation(k3);
     }
@@ -98,6 +134,14 @@ public class AvlBinarySearchTree<AnyType extends Comparable<? super AnyType>>{
         }
         else if(compare_result>0){
             node.right = insert(data,node.right);
+            if (height(node.right)-height(node.left)==2){
+                if(data.compareTo(node.right.data)<0){
+                    node = rightRightRotation(node);
+                }
+                else {
+                    node = rightLeftRotation(node);
+                }
+            }
         }
         else {
             return node;
