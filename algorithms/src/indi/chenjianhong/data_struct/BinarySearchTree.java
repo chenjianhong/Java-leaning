@@ -52,7 +52,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>{
 
     public BinaryNode<AnyType> remove(AnyType element_data,BinaryNode<AnyType> node){
         if(node == null){
-            return node;
+            return null;
         }
         int compare_result = element_data.compareTo(node.data);
         if(compare_result>0){
