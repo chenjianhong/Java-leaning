@@ -1,5 +1,8 @@
 package indi.chenjianhong.data_struct;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * Created by mason on 2015/4/15.
  * avl 树是带有平衡条件的二叉查找树
@@ -39,9 +42,6 @@ public class AvlBinarySearchTree<AnyType extends Comparable<AnyType>>{
         return 0;
     }
 
-    private int height(){
-        return height(root);
-    }
 
     private int max(int a,int b){
         return a>b?a:b;
@@ -147,18 +147,38 @@ public class AvlBinarySearchTree<AnyType extends Comparable<AnyType>>{
         return node;
     }
 
-    public void print_tree(){
-        print_tree(root);
+    public void mid_print_tree(){
+        mid_print_tree(root);
     }
 
-    public void print_tree(AvlBinaryNode node){
+    public void mid_print_tree(AvlBinaryNode node){
         System.out.println(node.data);
         if(node.left!=null){
-            print_tree(node.left);
+            mid_print_tree(node.left);
         }
         if(node.right!=null){
-            print_tree(node.right);
+            mid_print_tree(node.right);
         }
+    }
+
+    public void level_print_tree(){
+        level_print_tree(root);
+    }
+
+    public void level_print_tree(AvlBinaryNode node){
+        Queue<AvlBinaryNode> q = new LinkedList<AvlBinaryNode>();
+        q.add(node);
+        while (!q.isEmpty()){
+            AvlBinaryNode temp = q.poll();
+            System.out.println(temp.data);
+            if(temp.left!=null){
+                q.add(temp.left);
+            }
+            if(temp.right!=null){
+                q.add(temp.right);
+            }
+        }
+
     }
 
     public static void main(String args[]){
@@ -168,7 +188,8 @@ public class AvlBinarySearchTree<AnyType extends Comparable<AnyType>>{
         avl_tree.insert(3);
         avl_tree.insert(5);
         avl_tree.insert(7);
-        avl_tree.print_tree();
+        avl_tree.mid_print_tree();
+        avl_tree.level_print_tree();
     }
 
 
