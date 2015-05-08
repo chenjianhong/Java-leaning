@@ -147,15 +147,38 @@ public class AvlBinarySearchTree<AnyType extends Comparable<AnyType>>{
         return node;
     }
 
+
+    public AvlBinaryNode<AnyType> search(AnyType value){
+        return search(value,root);
+    }
+
+    public AvlBinaryNode<AnyType> search(AnyType value,AvlBinaryNode<AnyType> node){
+        if(node==null){
+            return null;
+        }
+        System.out.println(node.data);
+        int compare_result = value.compareTo(node.data);
+        if(compare_result>0){
+            return search(value,node.right);
+        }
+        else if(compare_result<0){
+            return search(value,node.left);
+        }
+        else {
+            return node;
+        }
+    }
+
+
     public void mid_print_tree(){
         mid_print_tree(root);
     }
 
     public void mid_print_tree(AvlBinaryNode node){
-        System.out.println(node.data);
         if(node.left!=null){
             mid_print_tree(node.left);
         }
+        System.out.println(node.data);
         if(node.right!=null){
             mid_print_tree(node.right);
         }
@@ -170,7 +193,7 @@ public class AvlBinarySearchTree<AnyType extends Comparable<AnyType>>{
         q.add(node);
         while (!q.isEmpty()){
             AvlBinaryNode temp = q.poll();
-            System.out.println(temp.data);
+            System.out.println(String.format("value:%s,height:%s",temp.data,temp.height));
             if(temp.left!=null){
                 q.add(temp.left);
             }
@@ -190,8 +213,12 @@ public class AvlBinarySearchTree<AnyType extends Comparable<AnyType>>{
         avl_tree.insert(7);
         avl_tree.mid_print_tree();
         avl_tree.level_print_tree();
+        AvlBinaryNode<Integer> search_result = avl_tree.search(5);
+        if(search_result==null){
+            System.out.println("value is not exist");
+        }
+        else{
+            System.out.println("value has been found");
+        }
     }
-
-
-
 }
